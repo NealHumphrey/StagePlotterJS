@@ -105,54 +105,62 @@ var library = {
 
 //Add all the shapes to the prep area
 //TODO - would be cleaner to create a function to do SVGs and Shapes by passing array of objects and top locations....
+var SVG = {};
+var itemsWithConnectors = [];
 
-var text = new fabric.IText("Musician Name\n(instrument)",library.text).set($.extend({},library.prepProperties,{top:10}));
+
+var text = new fabric.IText("Musician Name\n(instrument)",library.text).set($.extend({},library.prepProperties,{top:10, addConnector: false}));
 prep.add(text);
 
-var diBox = new fabric.LabeledRect(library.diBox).set($.extend({},library.prepProperties,{top:75}));			//use jQuery .extend to overwrite only the 'top' property
+var diBox = new fabric.LabeledRect(library.diBox).set($.extend({},library.prepProperties,{top:75, addConnector: true}));			//use jQuery .extend to overwrite only the 'top' property
 prep.add(diBox);
 
-var amp = fabric.loadSVGFromURL(library.ampSVGsrc,function(objects,options) {
+fabric.loadSVGFromURL(library.ampSVGsrc,function(objects,options) {
     	var obj = fabric.util.groupSVGElements(objects, options);
  		obj.set($.extend({},library.prepProperties,{top:125}));
+ 		obj.addConnector = true;	//later, this will need to be added directly to the object, not memory, so it can be sent to SVG
+ 		SVG['speaker'] = obj;
  		prep.add(obj);
- 		return obj;
     });
 
-var mic = fabric.loadSVGFromURL(library.micSVGsrc,function(objects,options) {
+fabric.loadSVGFromURL(library.micSVGsrc,function(objects,options) {
     	var obj = fabric.util.groupSVGElements(objects, options);
  		obj.set($.extend({},library.prepProperties,{top:200}));
+ 		obj.addConnector = true;
+ 		SVG['mic'] = obj;
  		prep.add(obj);
     });
 
-var monitor = fabric.loadSVGFromURL(library.monitorSVGsrc,function(objects,options) {
+fabric.loadSVGFromURL(library.monitorSVGsrc,function(objects,options) {
     	var obj = fabric.util.groupSVGElements(objects, options);
  		obj.set($.extend({},library.prepProperties,{top:275}));
+ 		obj.addConnector = false;
+ 		SVG['monitor'] = obj;
  		prep.add(obj);
     });
 
-var speaker = fabric.loadSVGFromURL(library.speakerSVGsrc,function(objects,options) {
+fabric.loadSVGFromURL(library.speakerSVGsrc,function(objects,options) {
     	var obj = fabric.util.groupSVGElements(objects, options);
  		obj.set($.extend({},library.prepProperties,{top:350}));
+ 		obj.addConnector = false;
+ 		SVG['speaker'] = obj;
  		prep.add(obj);
     });
 
-var drum = fabric.loadSVGFromURL(library.drumSVGsrc,function(objects,options) {
+fabric.loadSVGFromURL(library.drumSVGsrc,function(objects,options) {
     	var obj = fabric.util.groupSVGElements(objects, options);
  		obj.set($.extend({},library.prepProperties,{top:425}));
+ 		obj.addConnector = false;
  		prep.add(obj);
+ 		SVG['drum'] = obj;
     });
 
-/*
-console.log(amp);
-var itemsWithConnectors = []; 	//putting this here to be close to the variables on the staging area, instead of close to the connector logic, because this is where it's most likely to be updated.
-itemsWithConnectors.push(diBox, amp, mic);
-*/
+
 stage.renderAll();
 prep.renderAll();
 
+
 /*
-var SVG = SVG || {};
 function loadSVG() {
 	fabric.loadSVGFromURL(library.drumSVGsrc,
 		function(objects,options) {
@@ -185,6 +193,17 @@ function addConnector(obj,canvas,offsetX,offsetY) {
   	stage.bringToFront(obj);
 }
 
+function getConnectorForLine(line){
+	var objects = stage.getObjects()
+	for(var i=0; i < objects.length; i++) {
+		if(objects[i].lineEndObj === line) {
+			return objects[i];
+		}
+	}
+	return null;
+}
+
+
 //Click 'prep' shape to duplicate on the stage
 prep.on('mouse:down', function(options){
 	if(options.target) {
@@ -192,11 +211,9 @@ prep.on('mouse:down', function(options){
 		 	options.target.clone(function (obj) {
 			    obj.set(library.stageProperties);
 			    stage.add(obj);
-			    //console.log(itemsWithConnectors[1].type);
-			    //console.log(itemsWithConnectors.indexOf(obj));
-			    //if(itemsWithConnectors.indexOf(obj) !== -1){
+			    if (options.target.addConnector){	//this will need to be changed when saving function is added.
 			    	addConnector(obj,stage,50,50);
-				//}
+				}
 		  	});
 		}
 		else {
@@ -220,5 +237,31 @@ stage.on('object:moving', function(e) {
     	}
     stage.renderAll();
   });
+
+
+//listen for delete keys
+var deleteObject = function(e) {
+  if (46 === e.keyCode) {
+	  var obj = stage.getActiveObject();
+	  if(obj) {
+	  	obj.remove();
+	  	var line = obj.lineStartObj;
+	  }
+	  if(line){
+	  	var connector = getConnectorForLine(line);
+	  }
+	  if(line){
+	  	line.remove();
+	  }
+	  if(connector){
+	  	connector.remove();
+	  }
+	}
+};
+
+var canvasWrapper = document.getElementById('canvasWrap');
+canvasWrapper.tabIndex = 1000;
+canvasWrapper.addEventListener("keydown", deleteObject, false);
+canvasWrapper.style.outline = "none";
 
 };//.onload
