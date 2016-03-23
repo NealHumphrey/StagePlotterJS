@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   data-name="Layer 2"
+   viewBox="0 0 13.93241 39.999371"
+   x="0px"
+   y="0px"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="microphone_josh_vasby.svg"
+   width="13.932409"
+   height="39.999371">
+  <metadata
+     id="metadata87">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>dynamic mic</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview85"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.067908"
+     inkscape:cx="15.95"
+     inkscape:cy="34.23573"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#a"
+       id="pattern4217"
+       patternTransform="translate(-34.9,-3.8)" />
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#a"
+       id="pattern4215"
+       patternTransform="translate(-34.9,-3.8)" />
+    <style
+       id="style6">.cls-1{fill:none;}.cls-2{fill:#fff;}.cls-3,.cls-4{fill:#231f20;}.cls-3{stroke:#231f20;stroke-miterlimit:10;}.cls-5{fill:url(#a);}</style>
+    <pattern
+       id="a"
+       data-name="New Pattern Swatch 6"
+       width="3.6"
+       height="3.64"
+       patternUnits="userSpaceOnUse"
+       viewBox="0 0 3.6 3.6">
+      <rect
+         class="cls-1"
+         width="3.6"
+         height="3.64"
+         id="rect9" />
+      <circle
+         class="cls-2"
+         cx="3.6"
+         cy="3.6"
+         r="0.5"
+         id="circle11" />
+      <circle
+         class="cls-2"
+         cx="1.8"
+         cy="3.6"
+         r="0.5"
+         id="circle13" />
+      <circle
+         class="cls-2"
+         cx="3.6"
+         cy="1.8"
+         r="0.5"
+         id="circle15" />
+      <circle
+         class="cls-2"
+         cx="1.8"
+         cy="1.8"
+         r="0.5"
+         id="circle17" />
+      <circle
+         class="cls-2"
+         cx="0.9"
+         cy="2.7"
+         r="0.5"
+         id="circle19" />
+      <circle
+         class="cls-2"
+         cx="2.7"
+         cy="2.7"
+         r="0.5"
+         id="circle21" />
+      <circle
+         class="cls-2"
+         cx="0.9"
+         cy="0.9"
+         r="0.5"
+         id="circle23" />
+      <circle
+         class="cls-2"
+         cx="2.7"
+         cy="0.9"
+         r="0.5"
+         id="circle25" />
+      <circle
+         class="cls-2"
+         cy="3.6"
+         r="0.5"
+         id="circle27" />
+      <circle
+         class="cls-2"
+         cy="1.8"
+         r="0.5"
+         id="circle29" />
+      <circle
+         class="cls-2"
+         cx="3.6"
+         r="0.5"
+         id="circle31" />
+      <circle
+         class="cls-2"
+         cx="1.8"
+         r="0.5"
+         id="circle33" />
+      <circle
+         class="cls-2"
+         r="0.5"
+         id="circle35" />
+    </pattern>
+  </defs>
+  <title
+     id="title37">dynamic mic</title>
+  <g
+     id="g4219"
+     transform="scale(0.43812608,0.43503456)">
+    <polygon
+       style="fill:#231f20;stroke:#231f20;stroke-width:2.29054356;stroke-miterlimit:10"
+       id="polygon39"
+       points="22.1,90.8 10.1,90.8 8.1,30.5 24.1,30.5 22.1,90.8 "
+       class="cls-3" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path41"
+       d="M 15.9,0 A 15.9,15.9 0 0 0 0,15.9 l 31.8,0 A 15.9,15.9 0 0 0 15.9,0 Z"
+       class="cls-1" />
+    <path
+       style="fill:#231f20"
+       inkscape:connector-curvature="0"
+       id="path43"
+       d="M 15.9,0 A 15.9,15.9 0 0 0 0,15.9 l 31.8,0 A 15.9,15.9 0 0 0 15.9,0 Z"
+       class="cls-4" />
+    <path
+       style="fill:url(#pattern4215)"
+       inkscape:connector-curvature="0"
+       id="path45"
+       d="M 15.9,0 A 15.9,15.9 0 0 0 0,15.9 l 31.8,0 A 15.9,15.9 0 0 0 15.9,0 Z"
+       class="cls-5" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path47"
+       d="m 7.1,29.2 17.7,0 a 16,16 0 0 0 6.4,-8.9 l -30.6,0 a 15.9,15.9 0 0 0 6.5,8.9 z"
+       class="cls-1" />
+    <path
+       style="fill:#231f20"
+       inkscape:connector-curvature="0"
+       id="path49"
+       d="m 7.1,29.2 17.7,0 a 16,16 0 0 0 6.4,-8.9 l -30.6,0 a 15.9,15.9 0 0 0 6.5,8.9 z"
+       class="cls-4" />
+    <path
+       style="fill:url(#pattern4217)"
+       inkscape:connector-curvature="0"
+       id="path51"
+       d="m 7.1,29.2 17.7,0 a 16,16 0 0 0 6.4,-8.9 l -30.6,0 a 15.9,15.9 0 0 0 6.5,8.9 z"
+       class="cls-5" />
+    <rect
+       style="fill:none"
+       id="rect53"
+       height="2.8800001"
+       width="2.9000001"
+       y="50.099998"
+       x="22"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle55"
+       r="0.40000001"
+       cy="53"
+       cx="24.9"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle57"
+       r="0.40000001"
+       cy="53"
+       cx="23.4"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle59"
+       r="0.40000001"
+       cy="51.5"
+       cx="24.9"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle61"
+       r="0.40000001"
+       cy="51.5"
+       cx="23.4"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle63"
+       r="0.40000001"
+       cy="52.299999"
+       cx="22.700001"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle65"
+       r="0.40000001"
+       cy="52.299999"
+       cx="24.200001"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle67"
+       r="0.40000001"
+       cy="50.799999"
+       cx="22.700001"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle69"
+       r="0.40000001"
+       cy="50.799999"
+       cx="24.200001"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle71"
+       r="0.40000001"
+       cy="53"
+       cx="22"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle73"
+       r="0.40000001"
+       cy="51.5"
+       cx="22"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle75"
+       r="0.40000001"
+       cy="50.099998"
+       cx="24.9"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle77"
+       r="0.40000001"
+       cy="50.099998"
+       cx="23.4"
+       class="cls-1" />
+    <circle
+       style="fill:none"
+       id="circle79"
+       r="0.40000001"
+       cy="50.099998"
+       cx="22"
+       class="cls-1" />
+  </g>
+</svg>
