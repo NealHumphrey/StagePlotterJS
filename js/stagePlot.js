@@ -35,6 +35,45 @@ fabric.LabeledRect.fromObject = function(options) {
         }
 
 
+/*
+*Tried making an editable text class with more colored background padding... didn't work
+fabric.EditableRect = fabric.util.createClass(fabric.IText, {
+	type: 'editableRect',
+	initialize: function(options) {
+	    options || (options = { });
+	    this.callSuper('initialize', options);
+	    this.set('textPadding', options.textPadding || 10);
+	  },
+	  toObject: function() {
+	    return fabric.util.object.extend(this.callSuper('toObject'), {
+	      textPadding: this.get('textPadding')
+	    });
+	  },
+	  _render: function(ctx) {
+	    this.callSuper('_render', ctx);
+	   //if(this.backgroundColor) {
+	   	ctx.save();
+      	ctx.fillStyle = '#35586C';
+		    ctx.fillRect(
+		        this._getLeftOffset()-10,
+		        this._getTopOffset()-5,
+		        this.width +20,
+		        this.height +10
+	      	);
+	    ctx.restore();
+		//}
+		
+	  }
+});
+fabric.EditableRect.fromObject = function(options) {
+          return new fabric.EditableRect(options);
+        }
+*/
+
+
+
+
+//Store all the object properties in one place
 var library = {
 	prepProperties: {
 		selectable: false,		//Allows user to move
@@ -45,11 +84,17 @@ var library = {
 		left: 100,
 		top: 50,
 		selectable: true,		//Allows user to move
+		lockScalingX: true,
+		lockScalingY: true,
+		hasBorders: true,
+		hasControls: true,
 		hasRotatingPoint: true,
-		cornerSize:6,
-		padding: 5, //padding between object and controls
+		cornerSize:10,
+		transparentCorners:false,
+		padding: 10, //padding between object and controls
 		originX: 'center',
 		originY: 'center',
+		//individual controlling corners option are a function, set on load
 	},
 
 	diBox: {
@@ -88,7 +133,8 @@ var library = {
 		fill: '#fff',
 		stroke: '#666',
 		hasControls: false,
-		hasBorders: false,
+		hasBorders: true,
+		padding: 10,
 		opacity: 1,
 		originX: 'center',
 		originY: 'center',
@@ -109,66 +155,33 @@ var SVG = {};
 var itemsWithConnectors = [];
 
 
-var text = new fabric.IText("Musician Name\n(instrument)",library.text).set($.extend({},library.prepProperties,{top:10, addConnector: false}));
+var text = new fabric.IText("Musician Name\n(instrument)",library.text).set($.extend({},library.prepProperties,{top:10, addConnector: false}));			//TODO change back to IText
 prep.add(text);
 
 var diBox = new fabric.LabeledRect(library.diBox).set($.extend({},library.prepProperties,{top:75, addConnector: true}));			//use jQuery .extend to overwrite only the 'top' property
 prep.add(diBox);
 
-fabric.loadSVGFromURL(library.ampSVGsrc,function(objects,options) {
-    	var obj = fabric.util.groupSVGElements(objects, options);
- 		obj.set($.extend({},library.prepProperties,{top:125}));
- 		obj.addConnector = true;	//later, this will need to be added directly to the object, not memory, so it can be sent to SVG
- 		SVG['speaker'] = obj;
- 		prep.add(obj);
-    });
-
-fabric.loadSVGFromURL(library.micSVGsrc,function(objects,options) {
-    	var obj = fabric.util.groupSVGElements(objects, options);
- 		obj.set($.extend({},library.prepProperties,{top:200}));
- 		obj.addConnector = true;
- 		SVG['mic'] = obj;
- 		prep.add(obj);
-    });
-
-fabric.loadSVGFromURL(library.monitorSVGsrc,function(objects,options) {
-    	var obj = fabric.util.groupSVGElements(objects, options);
- 		obj.set($.extend({},library.prepProperties,{top:275}));
- 		obj.addConnector = false;
- 		SVG['monitor'] = obj;
- 		prep.add(obj);
-    });
-
-fabric.loadSVGFromURL(library.speakerSVGsrc,function(objects,options) {
-    	var obj = fabric.util.groupSVGElements(objects, options);
- 		obj.set($.extend({},library.prepProperties,{top:350}));
- 		obj.addConnector = false;
- 		SVG['speaker'] = obj;
- 		prep.add(obj);
-    });
-
-fabric.loadSVGFromURL(library.drumSVGsrc,function(objects,options) {
-    	var obj = fabric.util.groupSVGElements(objects, options);
- 		obj.set($.extend({},library.prepProperties,{top:425}));
- 		obj.addConnector = false;
- 		prep.add(obj);
- 		SVG['drum'] = obj;
-    });
-
+loadSVG(library.ampSVGsrc,'speaker',125,true);
+loadSVG(library.micSVGsrc,'mic',200,true);
+loadSVG(library.monitorSVGsrc,'monitor',275,false);
+loadSVG(library.speakerSVGsrc,'speaker',350,false);
+loadSVG(library.drumSVGsrc,'drum',425,false);
 
 stage.renderAll();
 prep.renderAll();
 
 
-/*
-function loadSVG() {
-	fabric.loadSVGFromURL(library.drumSVGsrc,
+
+function loadSVG(src,name,top,addConnector) {
+	fabric.loadSVGFromURL(src,
 		function(objects,options) {
     		var obj = fabric.util.groupSVGElements(objects, options);
- 			obj.set($.extend({},library.prepProperties,{top:425}));
- 			prep.add(obj);
-}
-*/
+ 			obj.set($.extend({},library.prepProperties,{top:top}));
+ 			obj.addConnector = addConnector;
+	 		prep.add(obj);
+	 		SVG[name] = obj;
+		});
+};
 
 function makeConnector(left, top, lineEndObj) {
 	var c = new fabric.Circle($.extend({},library.connector,{left: left, top:top}));
@@ -210,6 +223,7 @@ prep.on('mouse:down', function(options){
 		if (fabric.util.getKlass(options.target.type).async) {  //TODO getKlass has optional second argument of namespace
 		 	options.target.clone(function (obj) {
 			    obj.set(library.stageProperties);
+			    obj.setControlsVisibility({bl:false, br:false,mb:false,ml:false, mr:false, mt:false, tl:false, tr:false, mtr:true}); //Only allow rotation, so only show rotation control box.
 			    stage.add(obj);
 			    if (options.target.addConnector){	//this will need to be changed when saving function is added.
 			    	addConnector(obj,stage,50,50);
@@ -218,6 +232,7 @@ prep.on('mouse:down', function(options){
 		}
 		else {
 			var obj = options.target.clone().set(library.stageProperties);
+			obj.setControlsVisibility({bl:false, br:false,mb:false,ml:false, mr:false, mt:false, tl:false, tr:false, mtr:true});
 		  	stage.add(obj);
 		  	if (obj.type!=='i-text'){
 		  		addConnector(obj,stage,50,50);
@@ -241,24 +256,26 @@ stage.on('object:moving', function(e) {
 
 //listen for delete keys
 var deleteObject = function(e) {
-  if (46 === e.keyCode) {
-	  var obj = stage.getActiveObject();
-	  if(obj) {
-	  	obj.remove();
-	  	var line = obj.lineStartObj;
-	  }
-	  if(line){
-	  	var connector = getConnectorForLine(line);
-	  }
-	  if(line){
-	  	line.remove();
-	  }
-	  if(connector){
-	  	connector.remove();
-	  }
+  if (46 === e.keyCode || 8 === e.keyCode) {
+  		e.preventDefault();
+		var obj = stage.getActiveObject();
+		if(obj) {
+			obj.remove();
+			var line = obj.lineStartObj;
+		}
+		if(line){
+			var connector = getConnectorForLine(line);
+		}
+		if(line){
+			line.remove();
+		}
+		if(connector){
+			connector.remove();
+		}
 	}
 };
 
+//Apply the listener to a wrapper so that we can appropriately distinguish between editing text and deleting objects
 var canvasWrapper = document.getElementById('canvasWrap');
 canvasWrapper.tabIndex = 1000;
 canvasWrapper.addEventListener("keydown", deleteObject, false);
