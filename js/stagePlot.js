@@ -2,32 +2,77 @@
 window.onload = function() {
 
 var stage = new fabric.Canvas('stage');
-	stage.selection = false; 				//need to disable grouping so that connector lines work. Future upgrade - handle logic to make connector lines draggable.
+	stage.selection = false; 				//need to disable grouping so that connector lines work. 
 var prep = new fabric.Canvas('prep');
 	prep.selection = false; 				//prep area should just be buttons, no need to group objects. 
+
+
+// Save additional attributes in Serialization
+fabric.Object.prototype.toObject = (function (toObject) {
+    return function () {
+        return fabric.util.object.extend(toObject.call(this), {
+            lineIdStart: this.lineIdStart,
+            lineIdEnd: this.lineIdEnd,
+            id: this.id,
+            class: this.class,
+
+            //Additional properties not in default toJSON function
+            selectable: this.selectable,
+			lockScalingX: this.lockScalingX,
+			lockScalingY: this.lockScalingY,
+			hasBorders: this.hasBorders,
+			hasControls: this.hasControls,
+			hasRotatingPoint: this.hasRotatingPoint,
+			cornerSize: this.cornerSize,
+			transparentCorners: this.transparentCorners,
+			padding: this.padding
+
+        });
+    };
+})(fabric.Object.prototype.toObject);
+
+
+//Generate random IDs
+function S4() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+};
+function guid() {
+	var guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+	return guid;
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 //Make a new type of rectangle with text in it (not editable text)
 fabric.LabeledRect = fabric.util.createClass(fabric.Rect, {
 	  type: 'labeledRect',
 	  initialize: function(options) {
-	    options || (options = { });
+		options || (options = { });
 
-	    this.callSuper('initialize', options);
-	    this.set('label', options.label || '');
+		this.callSuper('initialize', options);
+		this.set('label', options.label || '');
 	  },
 	  toObject: function() {
 	    return fabric.util.object.extend(this.callSuper('toObject'), {
-	      label: this.get('label')
-	      //name: this.get('name')  //TODO move this to modify/extend the Object 'class' instead?
+			label: this.get('label'),
 	    });
 	  },
 	  _render: function(ctx) {
-	    this.callSuper('_render', ctx);
-	    ctx.font = '18px Helvetica';
-	    ctx.fillStyle = '#333';
-	    var wordwidth = ctx.measureText(this.get('label'),1).width;
-	    ctx.fillText(this.label, -wordwidth/2, -this.height/2 + 18);
+			this.callSuper('_render', ctx);
+			ctx.font = '18px Helvetica';
+			ctx.fillStyle = '#333';
+			var wordwidth = ctx.measureText(this.get('label'),1).width;
+			ctx.fillText(this.label, -wordwidth/2, -this.height/2 + 18);
 	  }
 });
 fabric.LabeledRect.fromObject = function(options) {
@@ -178,6 +223,7 @@ function loadSVG(src,name,top,addConnector) {
     		var obj = fabric.util.groupSVGElements(objects, options);
  			obj.set($.extend({},library.prepProperties,{top:top}));
  			obj.addConnector = addConnector;
+ 			obj.sourcePath = src;
 	 		prep.add(obj);
 	 		SVG[name] = obj;
 		});
@@ -186,11 +232,15 @@ function loadSVG(src,name,top,addConnector) {
 function makeConnector(left, top, lineEndObj) {
 	var c = new fabric.Circle($.extend({},library.connector,{left: left, top:top}));
 	c.lineEndObj = lineEndObj;
+	c.lineIdEnd = lineEndObj.id;
 	return c;
 }
 
 function makeLine(coords) {
-	return new fabric.Line(coords, library.line);
+	var line = new fabric.Line(coords, library.line);
+	line.set({id: guid()});
+	console.log(line);
+	return line;
 }
 
 function addConnector(obj,canvas,offsetX,offsetY) {
@@ -201,6 +251,12 @@ function addConnector(obj,canvas,offsetX,offsetY) {
 	var line = makeLine([obj.get('left'),obj.get('top'),obj.get('left')+ offsetX, obj.get('top') + offsetY]);
 	var connector = makeConnector(line.get('x2'), line.get('y2'),line);
 	obj.lineStartObj = line;
+	obj.lineIdStart = line.id;
+
+	console.log(line.id);
+	console.log(line);
+	console.log(obj);
+	console.log(obj.lineIdStart);
 
   	stage.add(line, connector);
   	stage.bringToFront(obj);
@@ -251,6 +307,7 @@ stage.on('object:moving', function(e) {
     		p.lineStartObj.set({ 'x1': p.left, 'y1': p.top });
     	}
     stage.renderAll();
+    console.log(p.id);
   });
 
 
@@ -281,4 +338,71 @@ canvasWrapper.tabIndex = 1000;
 canvasWrapper.addEventListener("keydown", deleteObject, false);
 canvasWrapper.style.outline = "none";
 
+
+
+
+//Save to JSON
+var outputArea = document.getElementById('outputArea');
+var outputButton = document.getElementById('loadOutput');
+outputButton.onclick = loadOutput;
+
+function loadOutput() {
+	//couldn't get this optional property to work when passing to toJSON() function. var customProperties = 'selectable lockScalingX lockScalingY hasBorders hasControls hasRotatingPoint cornerSize transparentCorners padding originX originY'.split(' ');
+	var json = stage.toDatalessJSON(); //JSON.stringify(stage);			//stage.toJSON()???
+	outputArea.value= JSON.stringify(json);     //json
+}
+
+//Load from JSON
+var inputArea = document.getElementById('inputArea');
+var inputButton = document.getElementById('loadInput');
+inputButton.onclick = loadInput;
+
+function loadInput() {
+	var json = inputArea.value
+	stage.clear();
+	stage.loadFromJSON(json, stage.renderAll.bind(stage));
+
+	
+	var objects = stage.getObjects()
+	loop1:
+	for(var i=0; i < objects.length; i++) {
+		//perform some settings adjustments not captured in the JSON
+		objects[i].setControlsVisibility({bl:false, br:false,mb:false,ml:false, mr:false, mt:false, tl:false, tr:false, mtr:true}); //Only allow rotation, so only show rotation control box.
+
+		//link up the objects to lines and connector dots
+		console.log("object number: " + i);
+		//The object itself - lineIdStart says this object has a line that starts on the object
+		if(objects[i].lineIdStart) {
+			loop2:
+			for (var j=0; i<objects.length; j++) {
+				if(objects[j].id === objects[i].lineIdStart) {
+					objects[i].lineStartObj = objects[j];				// found the object with the matching id - set the id
+					console.log(objects[i]);
+					break loop2;
+				};
+			}; 
+		}
+
+		//The circle connector - lineIdEnd says this object (the circle) has a line that ends on the object
+		if(objects[i].lineIdEnd) {
+			loop3:
+			for (var j=0; i<objects.length; j++) {
+				if(objects[j].id === objects[i].lineIdEnd) {
+					objects[i].lineEndObj = objects[j];				// found the object with the matching id - set the id 
+					console.log(objects[i]);
+					break loop3;
+				};
+			};
+		};
+	};
+
+	stage.renderAll();
+};
+
 };//.onload
+
+
+
+//Cool tool to use: 
+//http://michaeljcalkins.github.io/angular-examples/#/draw
+	//https://github.com/michaeljcalkins/angular-examples
