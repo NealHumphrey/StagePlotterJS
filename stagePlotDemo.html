@@ -14,27 +14,41 @@
 <div class="container">
   <div class="panel">
     <div class="panel-heading feed">
-      <h3>About This Event</h3>
+      <h3>Stage Plot Tool</h3>
     </div>
     <div class="panel-body">
       <!--This is where the "Description" section starts-->
       
-      <p>Put stuff here</p>
+      <p>An interesting tool I made so I could learn Fabric.js and Javascript in general. In <a href="https://flashband.org">Flashband</a> we were using Google Draw documents for our one-night bands to make stage plots. This is to replace that with a dedicated tool.</p>
+
+      <p>Still a work in progress. When I finish it up it will go on the Flashband website. The 'Generate Output' and 'Load Input' boxes are to demo the save / reload functionality that will link to our database.</p>
+
       <div id="canvasWrap">
+        <div class="row">
         <div class="col-sm-2"><canvas id="prep" width="150" height="500" style= "border: 1px solid #d3d3d3;"></canvas></div>
         <div class="col-sm-10"><canvas id="stage" width="650" height="500" style="border: 1px solid #d3d3d3;"></canvas></div>
+        </div>
       </div>
 
-      <textarea rows="4" id="outputArea">
-      </textarea>
-      <a href="javascript:void(0)" class="btn btn-info" id="loadOutput">Generate Output</a>
+      <hr>
 
-      <textarea rows="4" id="inputArea">
-      </textarea>
-      <a href="javascript:void(0)" class="btn btn-info" id="loadInput">Load Input</a>
+      <div class="row">
+        <div class="col-xs-12">
+          <textarea rows="4" id="outputArea">
+          </textarea>
+          <a href="javascript:void(0)" class="btn btn-info" id="loadOutput">Generate Output</a>
+        </div>
+      </div>
 
+      <hr>
 
-
+      <div class="row">
+        <div class="col-xs-12">
+          <textarea rows="4" id="inputArea">
+          </textarea>
+          <a href="javascript:void(0)" class="btn btn-info" id="loadInput">Load Input</a>
+        </div>
+      </div>
 
       <!--.end description section-->
     </div>
